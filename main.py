@@ -1,5 +1,7 @@
+import os
+
 class Mancala:
-    """A simple Mancala game implementation."""
+    """A simple Mancala game implementation with Minimax and Alpha-Beta Pruning."""
 
     def __init__(self):
         """Initializes the game board with 6 pits per player and 1 store each."""
@@ -11,7 +13,7 @@ class Mancala:
         if not (1 <= pit_index <= 6):
             raise ValueError("Invalid pit index. Choose between 1 and 6.")
         
-        pit_index -= 1  # Convert to 0-based index, as python uses 0-based indexing
+        pit_index -= 1  # Convert to 0-based index
 
         player_offset = self.current_player * 7
         pit = player_offset + pit_index
@@ -43,20 +45,8 @@ class Mancala:
         self.current_player = 1 - self.current_player  # Switch turn
 
     def is_game_over(self):
-        """Checks if the game is over when one side is empty or one store has more than half the gems."""
-        # Check if one side is empty
-        if sum(self.pits[:6]) == 0 or sum(self.pits[7:13]) == 0:
-            return True
-            
-        # Calculate total gems in the game (initially 48 with 4 gems in each of 12 pits)
-        total_gems = sum(self.pits)
-        half_total = total_gems / 2
-        
-        # Check if either player has more than half the total gems in their store
-        if self.pits[6] > half_total or self.pits[13] > half_total:
-            return True
-            
-        return False
+        """Checks if the game is over when one side is empty."""
+        return sum(self.pits[:6]) == 0 or sum(self.pits[7:13]) == 0
 
     def get_winner(self):
         """Determines the winner based on the final scores."""
@@ -70,11 +60,68 @@ class Mancala:
         return "It's a Draw!"
 
     def display(self):
-        """Displays the current board state."""
+        """Clears the screen and displays the current board state."""
         print(" ", self.pits[12:6:-1])
         print(self.pits[13], "                  ", self.pits[6])
         print(" ", self.pits[:6])
         print(f"Current Player: {'Player 1' if self.current_player == 0 else 'Player 2'}")
+
+    def minimax(self, depth, alpha, beta, maximizing_player):
+        """Minimax algorithm with Alpha-Beta pruning."""
+        if depth == 0 or self.is_game_over():
+            return self.pits[6] - self.pits[13]
+        
+        if maximizing_player:
+            max_eval = float('-inf')
+            for i in range(6):
+                try:
+                    new_game = Mancala()
+                    new_game.pits = self.pits[:]
+                    new_game.current_player = self.current_player
+                    new_game.move(i + 1)
+                    eval = new_game.minimax(depth - 1, alpha, beta, False)
+                    max_eval = max(max_eval, eval)
+                    alpha = max(alpha, eval)
+                    if beta <= alpha:
+                        break
+                except ValueError:
+                    continue
+            return max_eval
+        else:
+            min_eval = float('inf')
+            for i in range(6):
+                try:
+                    new_game = Mancala()
+                    new_game.pits = self.pits[:]
+                    new_game.current_player = self.current_player
+                    new_game.move(i + 1)
+                    eval = new_game.minimax(depth - 1, alpha, beta, True)
+                    min_eval = min(min_eval, eval)
+                    beta = min(beta, eval)
+                    if beta <= alpha:
+                        break
+                except ValueError:
+                    continue
+            return min_eval
+
+    def best_move(self):
+        """Finds the best move using the Minimax algorithm."""
+        best_value = float('-inf')
+        best_move = None
+        
+        for i in range(6):
+            try:
+                new_game = Mancala()
+                new_game.pits = self.pits[:]
+                new_game.current_player = self.current_player
+                new_game.move(i + 1)
+                move_value = new_game.minimax(5, float('-inf'), float('inf'), False)
+                if move_value > best_value:
+                    best_value = move_value
+                    best_move = i + 1
+            except ValueError:
+                continue
+        return best_move
 
 
 def main():
@@ -82,10 +129,13 @@ def main():
     while not game.is_game_over():
         game.display()
         try:
-            pit_choice = int(input("Choose a pit (1-6): "))
+            if game.current_player == 0:
+                pit_choice = int(input("Choose a pit (1-6): "))
+            else:
+                pit_choice = game.best_move()
+                print(f"AI chooses pit {pit_choice}")
             game.move(pit_choice)
             print('--------------------------------------------------------------------')
-
         except ValueError as e:
             print(e)
 
@@ -95,3 +145,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
