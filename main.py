@@ -43,8 +43,20 @@ class Mancala:
         self.current_player = 1 - self.current_player  # Switch turn
 
     def is_game_over(self):
-        """Checks if the game is over when one side is empty."""
-        return sum(self.pits[:6]) == 0 or sum(self.pits[7:13]) == 0
+        """Checks if the game is over when one side is empty or one store has more than half the gems."""
+        # Check if one side is empty
+        if sum(self.pits[:6]) == 0 or sum(self.pits[7:13]) == 0:
+            return True
+            
+        # Calculate total gems in the game (initially 48 with 4 gems in each of 12 pits)
+        total_gems = sum(self.pits)
+        half_total = total_gems / 2
+        
+        # Check if either player has more than half the total gems in their store
+        if self.pits[6] > half_total or self.pits[13] > half_total:
+            return True
+            
+        return False
 
     def get_winner(self):
         """Determines the winner based on the final scores."""
