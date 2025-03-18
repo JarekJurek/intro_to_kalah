@@ -26,7 +26,7 @@ class Mancala:
         
         while gems > 0:
             index = (index + 1) % 14
-            if index == (7 if self.current_player == 1 else 14):  # Skip opponent's store
+            if index == (6 if self.current_player == 1 else 13):  # Skip opponent's store
                 continue
             self.pits[index] += 1
             gems -= 1
@@ -64,12 +64,12 @@ class Mancala:
         print(" ", self.pits[12:6:-1])
         print(self.pits[13], "                  ", self.pits[6])
         print(" ", self.pits[:6])
-        print(f"Current Player: {'Player 1' if self.current_player == 0 else 'Player 2'}")
+        print(f"Current Player: {'Player 1' if self.current_player == 0 else 'Player 2'}\n\n")
 
     def minimax(self, depth, alpha, beta, maximizing_player):
         """Minimax algorithm with Alpha-Beta pruning."""
         if depth == 0 or self.is_game_over():
-            return self.pits[6] - self.pits[13]
+            return self.evaluate()
         
         if maximizing_player:
             max_eval = float('-inf')
@@ -103,6 +103,42 @@ class Mancala:
                 except ValueError:
                     continue
             return min_eval
+
+    def evaluate(self):
+        """Evaluates the current board state for the maximizing player."""
+        
+        # Base evaluation: score difference:
+        score = self.pits[13] - self.pits[6]
+
+        # More gems on your side:
+        ai_control = sum(self.pits[7:13])
+        human_control = sum(self.pits[:6])
+        control = ai_control - human_control
+
+        # Extra turn bonus:
+        extra_turn_potential = 0
+        for i in range(7, 13):  # AI's pits
+            pit_value = self.pits[i]
+            if pit_value > 0:
+                # If this pit's stones would end in the AI's store
+                landing_spot = (i + pit_value) % 14
+                if landing_spot == 13:  # AI store
+                    extra_turn_potential += 2
+
+        # weight the game state:
+        total_gems = ai_control + human_control
+        max_gems = 48
+        game_state_weight = 1.0 - total_gems / max_gems
+
+        # Early game strategy: prioritize extra turns and control
+        if game_state_weight > 0.5:
+            return 2* score + 2 * control + 2 * extra_turn_potential
+
+        # Late game: prioritize store
+
+        else:
+            return score + 4 * control + extra_turn_potential
+
 
     def best_move(self):
         """Finds the best move using the Minimax algorithm."""
