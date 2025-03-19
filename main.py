@@ -1,6 +1,7 @@
 from collections import defaultdict
 import json
 import os
+import random
 import time
 
 class Mancala:
@@ -474,6 +475,37 @@ def ai_vs_ai(stats, ai1_config, ai2_config, num_games=1, show_each_move=True):
     print("="*50)
     
     return results
+
+def ais_vs_ais(stats, num_games_per_match=1, num_matches=10):
+    """Run multiple matches between randomly selected AI configurations."""
+    ai_configs = load_ai_configs()
+    
+    if len(ai_configs) < 2:
+        print("Not enough AI configurations available. Need at least 2.")
+        return
+    
+    print(f"Running {num_matches} random AI matches with {num_games_per_match} games each...")
+    
+    for i in range(num_matches):
+        # Select two different configurations randomly
+        ai1_index = random.randint(0, len(ai_configs) - 1)
+        ai2_index = random.randint(0, len(ai_configs) - 1)
+        
+        # Ensure we don't have the same AI playing itself
+        while ai2_index == ai1_index:
+            ai2_index = random.randint(0, len(ai_configs) - 1)
+        
+        ai1_config = ai_configs[ai1_index]
+        ai2_config = ai_configs[ai2_index]
+        
+        print(f"\nMatch {i+1}/{num_matches}: {ai1_config['name']} vs {ai2_config['name']}")
+        ai_vs_ai(stats, ai1_config, ai2_config, num_games_per_match, show_each_move=True)
+    
+    print("\nAll matches completed!")
+    stats.display_stats()
+
+
+
         
 def main():
 
@@ -486,8 +518,9 @@ def main():
         print("1. Player vs Player")
         print("2. Player vs AI")
         print("3. AI vs AI")
-        print("4. View Statistics")
-        print("5. Exit")
+        print("4. AIs vs AIs")
+        print("5. View Statistics")
+        print("6. Exit")
 
         choice = input("Enter your choice: ")
         
@@ -512,12 +545,17 @@ def main():
             num_games = int(input("Enter the number of games to run: "))
             ai_vs_ai(stats, configs[ai1], configs[ai2], num_games, show_each_move=True)
             input("Press Enter to continue...")
-
         elif choice == "4":
-            stats.display_stats()
+            num_matches = int(input("Enter the number of matches to run: "))
+            num_games_per_match = int(input("Enter the number of games per match: "))
+            ais_vs_ais(stats, num_games_per_match=num_games_per_match, num_matches=num_matches)
             input("Press Enter to continue...")
 
         elif choice == "5":
+            stats.display_stats()
+            input("Press Enter to continue...")
+
+        elif choice == "6":
             print("Thanks for playing!")
             break
     stats.save_stats()
