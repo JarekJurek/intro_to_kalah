@@ -4,6 +4,8 @@ import os
 import random
 import time
 
+import stats_reader
+
 class Mancala:
     """A simple Mancala game implementation with Minimax and Alpha-Beta Pruning."""
 
@@ -476,7 +478,7 @@ def ai_vs_ai(stats, ai1_config, ai2_config, num_games=1, show_each_move=True):
     
     return results
 
-def ais_vs_ais(stats, num_games_per_match=1, num_matches=10):
+def ais_vs_ais(stats, num_games_per_match=1, num_matches=10, show_each_move=False):
     """Run multiple matches between randomly selected AI configurations."""
     ai_configs = load_ai_configs()
     
@@ -499,7 +501,7 @@ def ais_vs_ais(stats, num_games_per_match=1, num_matches=10):
         ai2_config = ai_configs[ai2_index]
         
         print(f"\nMatch {i+1}/{num_matches}: {ai1_config['name']} vs {ai2_config['name']}")
-        ai_vs_ai(stats, ai1_config, ai2_config, num_games_per_match, show_each_move=True)
+        ai_vs_ai(stats, ai1_config, ai2_config, num_games_per_match, show_each_move)
     
     print("\nAll matches completed!")
     stats.display_stats()
@@ -548,11 +550,21 @@ def main():
         elif choice == "4":
             num_matches = int(input("Enter the number of matches to run: "))
             num_games_per_match = int(input("Enter the number of games per match: "))
-            ais_vs_ais(stats, num_games_per_match=num_games_per_match, num_matches=num_matches)
+            show_each_move = input("Show each move? (y/n): ").lower()
+            if show_each_move == "y":
+                show_each_move = True
+            else:
+                show_each_move = False
+            ais_vs_ais(stats, num_games_per_match=num_games_per_match, num_matches=num_matches, show_each_move=show_each_move)
             input("Press Enter to continue...")
 
         elif choice == "5":
             stats.display_stats()
+            plot = input("Do you want to plot the statistics? (y/n): ").lower()
+            if plot == "y":
+                stats_reader.plot_stats()
+            else:
+                pass
             input("Press Enter to continue...")
 
         elif choice == "6":
