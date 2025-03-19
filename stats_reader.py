@@ -6,6 +6,22 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import os
 
+# Load AI configurations to get their types
+def load_ai_configs():
+    try:
+        with open("ai_configs.json", "r") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+# Create a mapping of AI names to their types
+def create_ai_type_mapping():
+    configs = load_ai_configs()
+    ai_types = {}
+    for config in configs:
+        ai_types[config["name"]] = config["type"]
+    return ai_types
+
 try:
     with open("game_stats.json", "r") as f:
         stats_data = json.load(f)
@@ -20,11 +36,14 @@ def plot_stats():
         print("No stats available to plot")
         return
     
+    # Get AI type information
+    ai_types = create_ai_type_mapping()
+    
     # Convert stats to DataFrame for easier analysis
     df = pd.DataFrame(stats)
     
     # Calculate win stats
-    win_stats = defaultdict(lambda: {"wins": 0, "games": 0, "turns": []})
+    win_stats = defaultdict(lambda: {"wins": 0, "games": 0, "turns": [], "type": "Unknown"})
     
     for game in stats:
         player1 = game["player1"]
@@ -40,6 +59,12 @@ def plot_stats():
         win_stats[player1]["turns"].append(turns)
         win_stats[player2]["turns"].append(turns)
         
+        # Set AI type if available
+        if player1 in ai_types:
+            win_stats[player1]["type"] = ai_types[player1]
+        if player2 in ai_types:
+            win_stats[player2]["type"] = ai_types[player2]
+        
         # Update wins
         if winner_idx == 0:
             win_stats[player1]["wins"] += 1
@@ -53,40 +78,60 @@ def plot_stats():
     
     # Prepare data for plotting
     players = []
+    player_labels = []  # Will include AI type
     win_rates = []
     avg_turns = []
     total_games = []
+    colors = []  # For coloring by AI type
+    
+    # Create color mapping for AI types
+    ai_type_set = set(data["type"] for player, data in win_stats.items())
+    color_map = {ai_type: px.colors.qualitative.Plotly[i % len(px.colors.qualitative.Plotly)] 
+                 for i, ai_type in enumerate(ai_type_set)}
     
     for player, data in win_stats.items():
         if data["games"] > 0:  # Avoid division by zero
             players.append(player)
+            player_labels.append(f"{player} ({data['type']})")
             win_rates.append(data["wins"] / data["games"] * 100)
             avg_turns.append(sum(data["turns"]) / len(data["turns"]))
             total_games.append(data["games"])
+            colors.append(color_map[data["type"]])
     
     # Add win rate bar chart
     fig.add_trace(
-        go.Bar(x=players, y=win_rates, text=[f"{wr:.1f}%" for wr in win_rates], textposition='auto'),
+        go.Bar(x=player_labels, y=win_rates, text=[f"{wr:.1f}%" for wr in win_rates], 
+               textposition='auto', marker_color=colors),
         row=1, col=1
     )
     
     # Add average turns bar chart
     fig.add_trace(
-        go.Bar(x=players, y=avg_turns, text=[f"{at:.1f}" for at in avg_turns], textposition='auto'),
+        go.Bar(x=player_labels, y=avg_turns, text=[f"{at:.1f}" for at in avg_turns], 
+               textposition='auto', marker_color=colors),
         row=2, col=1
     )
     
     # Add total games played bar chart
     fig.add_trace(
-        go.Bar(x=players, y=total_games, text=[f"{g}" for g in total_games], textposition='auto'),
+        go.Bar(x=player_labels, y=total_games, text=[f"{g}" for g in total_games], 
+               textposition='auto', marker_color=colors),
         row=3, col=1
     )
+    
+    # Create a "dummy" trace for each AI type to create a legend
+    for ai_type, color in color_map.items():
+        fig.add_trace(
+            go.Bar(x=[None], y=[None], name=ai_type, marker_color=color, showlegend=True),
+            row=1, col=1
+        )
     
     # Update layout
     fig.update_layout(
         title="Mancala Game Statistics",
-        height=1000,  # Increased height to accommodate new chart
-        showlegend=False
+        height=1000,
+        barmode='group',
+        legend_title_text="AI Type"
     )
     
     # Set y-axis titles
