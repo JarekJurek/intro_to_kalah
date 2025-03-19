@@ -1,0 +1,82 @@
+[
+    {
+        "name": "Baseline AI",
+        "type": "baseline",
+        "depth": 2,
+        "weights_early": [1, 1, 1],
+        "weights_late": [1, 1, 1],
+        "capture_weight": 1
+    },
+    {
+        "name": "AI_1",
+        "type": "AlphaBeta",
+        "depth": 4,
+        "weights_early": [1.5, 1, 2],
+        "weights_late": [2, 0.8, 1],
+        "capture_weight": 1.5
+    },
+    {
+        "name": "AI_2",
+        "type": "AlphaBeta",
+        "depth": 6,
+        "weights_early": [2, 1.5, 3],
+        "weights_late": [4, 0.8, 1],
+        "capture_weight": 2.5
+    },
+    {
+        "name": "AI_3",
+        "type": "AlphaBeta",
+        "depth": 5,
+        "weights_early": [1, 2.5, 1.5],
+        "weights_late": [1.5, 3, 1],
+        "capture_weight": 3
+    },
+    {
+        "name": "AI_4",
+        "type": "AlphaBeta",
+        "depth": 5,
+        "weights_early": [3, 1, 1.5],
+        "weights_late": [4, 0.5, 2],
+        "capture_weight": 2
+    },
+    {
+        "name": "AI_5",
+        "type": "AlphaBeta",
+        "depth": 8,
+        "weights_early": [2, 1, 2],
+        "weights_late": [3, 1, 1.5],
+        "capture_weight": 2
+    },
+    {
+        "name": "AI_6",
+        "type": "AlphaBeta",
+        "depth": 6,
+        "weights_early": [2, 2, 2],
+        "weights_late": [2, 2, 2],
+        "capture_weight": 2
+    },
+    {
+        "name": "AI_7",
+        "type": "AlphaBeta",
+        "depth": 5,
+        "weights_early": [3.5, 2, 2.5],
+        "weights_late": [1.5, 1, 1],
+        "capture_weight": 1.8
+    },
+    {
+        "name": "AI_8",
+        "type": "AlphaBeta",
+        "depth": 7,
+        "weights_early": [1, 1, 1.5],
+        "weights_late": [4.5, 1, 3],
+        "capture_weight": 2.2
+    },
+    {
+        "name": "AI_9",
+        "type": "AlphaBeta",
+        "depth": 3,
+        "weights_early": [2.5, 1.8, 2.2],
+        "weights_late": [3.2, 1.4, 1.8],
+        "capture_weight": 2.4
+    }
+]

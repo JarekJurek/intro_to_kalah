@@ -1,0 +1,12 @@
+Results of 10 games
+Aggressive AI vs Strategic AI
+
+Aggressive AI: 5
+Strategic AI: 5
+Draws: 0
+
+Win rates:
+Aggressive AI: 50.0%
+Strategic AI: 50.0%
+
+First player advantage: 100.0% win rate

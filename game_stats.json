@@ -1,0 +1,74 @@
+{
+  "history": [
+    {
+      "player1": "AI_2",
+      "player2": "AI_1",
+      "winner": 1,
+      "turns": 51,
+      "timestamp": "2025-03-19 22:24:40"
+    },
+    {
+      "player1": "AI_1",
+      "player2": "AI_2",
+      "winner": 1,
+      "turns": 37,
+      "timestamp": "2025-03-19 22:24:40"
+    },
+    {
+      "player1": "AI_2",
+      "player2": "AI_1",
+      "winner": 1,
+      "turns": 51,
+      "timestamp": "2025-03-19 22:24:41"
+    },
+    {
+      "player1": "AI_1",
+      "player2": "AI_2",
+      "winner": 1,
+      "turns": 37,
+      "timestamp": "2025-03-19 22:24:41"
+    },
+    {
+      "player1": "AI_2",
+      "player2": "AI_1",
+      "winner": 1,
+      "turns": 51,
+      "timestamp": "2025-03-19 22:24:41"
+    },
+    {
+      "player1": "AI_1",
+      "player2": "AI_2",
+      "winner": 1,
+      "turns": 37,
+      "timestamp": "2025-03-19 22:24:41"
+    },
+    {
+      "player1": "AI_2",
+      "player2": "AI_1",
+      "winner": 1,
+      "turns": 51,
+      "timestamp": "2025-03-19 22:24:41"
+    },
+    {
+      "player1": "AI_1",
+      "player2": "AI_2",
+      "winner": 1,
+      "turns": 37,
+      "timestamp": "2025-03-19 22:24:41"
+    },
+    {
+      "player1": "AI_2",
+      "player2": "AI_1",
+      "winner": 1,
+      "turns": 51,
+      "timestamp": "2025-03-19 22:24:42"
+    },
+    {
+      "player1": "AI_1",
+      "player2": "AI_2",
+      "winner": 1,
+      "turns": 37,
+      "timestamp": "2025-03-19 22:24:42"
+    }
+  ]
+}
