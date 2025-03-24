@@ -5599,6 +5599,286 @@
       "winner": 0,
       "turns": 36,
       "timestamp": "2025-03-19 23:08:07"
+    },
+    {
+      "player1": "AI_7",
+      "player2": "AI_3",
+      "winner": 1,
+      "turns": 49,
+      "timestamp": "2025-03-24 10:10:14"
+    },
+    {
+      "player1": "AI_3",
+      "player2": "AI_7",
+      "winner": 1,
+      "turns": 45,
+      "timestamp": "2025-03-24 10:10:14"
+    },
+    {
+      "player1": "AI_7",
+      "player2": "AI_3",
+      "winner": 1,
+      "turns": 49,
+      "timestamp": "2025-03-24 10:10:14"
+    },
+    {
+      "player1": "AI_3",
+      "player2": "AI_8",
+      "winner": 1,
+      "turns": 53,
+      "timestamp": "2025-03-24 10:10:15"
+    },
+    {
+      "player1": "AI_8",
+      "player2": "AI_3",
+      "winner": 1,
+      "turns": 36,
+      "timestamp": "2025-03-24 10:10:16"
+    },
+    {
+      "player1": "AI_3",
+      "player2": "AI_8",
+      "winner": 1,
+      "turns": 53,
+      "timestamp": "2025-03-24 10:10:17"
+    },
+    {
+      "player1": "AI_1",
+      "player2": "AI_4",
+      "winner": 0,
+      "turns": 22,
+      "timestamp": "2025-03-24 10:10:17"
+    },
+    {
+      "player1": "AI_4",
+      "player2": "AI_1",
+      "winner": 0,
+      "turns": 40,
+      "timestamp": "2025-03-24 10:10:17"
+    },
+    {
+      "player1": "AI_1",
+      "player2": "AI_4",
+      "winner": 0,
+      "turns": 22,
+      "timestamp": "2025-03-24 10:10:17"
+    },
+    {
+      "player1": "AI_1",
+      "player2": "AI_2",
+      "winner": 1,
+      "turns": 37,
+      "timestamp": "2025-03-24 10:10:18"
+    },
+    {
+      "player1": "AI_2",
+      "player2": "AI_1",
+      "winner": 1,
+      "turns": 51,
+      "timestamp": "2025-03-24 10:10:18"
+    },
+    {
+      "player1": "AI_1",
+      "player2": "AI_2",
+      "winner": 1,
+      "turns": 37,
+      "timestamp": "2025-03-24 10:10:18"
+    },
+    {
+      "player1": "AI_2",
+      "player2": "AI_8",
+      "winner": 1,
+      "turns": 38,
+      "timestamp": "2025-03-24 10:10:19"
+    },
+    {
+      "player1": "AI_8",
+      "player2": "AI_2",
+      "winner": 0,
+      "turns": 15,
+      "timestamp": "2025-03-24 10:10:20"
+    },
+    {
+      "player1": "AI_2",
+      "player2": "AI_8",
+      "winner": 1,
+      "turns": 38,
+      "timestamp": "2025-03-24 10:10:20"
+    },
+    {
+      "player1": "AI_7",
+      "player2": "AI_8",
+      "winner": 1,
+      "turns": 41,
+      "timestamp": "2025-03-24 10:10:21"
+    },
+    {
+      "player1": "AI_8",
+      "player2": "AI_7",
+      "winner": 1,
+      "turns": 31,
+      "timestamp": "2025-03-24 10:10:22"
+    },
+    {
+      "player1": "AI_7",
+      "player2": "AI_8",
+      "winner": 1,
+      "turns": 41,
+      "timestamp": "2025-03-24 10:10:23"
+    },
+    {
+      "player1": "AI_7",
+      "player2": "AI_5",
+      "winner": 1,
+      "turns": 41,
+      "timestamp": "2025-03-24 10:10:24"
+    },
+    {
+      "player1": "AI_5",
+      "player2": "AI_7",
+      "winner": 1,
+      "turns": 39,
+      "timestamp": "2025-03-24 10:10:25"
+    },
+    {
+      "player1": "AI_7",
+      "player2": "AI_5",
+      "winner": 1,
+      "turns": 41,
+      "timestamp": "2025-03-24 10:10:27"
+    },
+    {
+      "player1": "AI_9",
+      "player2": "AI_7",
+      "winner": 1,
+      "turns": 33,
+      "timestamp": "2025-03-24 10:10:27"
+    },
+    {
+      "player1": "AI_7",
+      "player2": "AI_9",
+      "winner": -1,
+      "turns": 53,
+      "timestamp": "2025-03-24 10:10:27"
+    },
+    {
+      "player1": "AI_9",
+      "player2": "AI_7",
+      "winner": 1,
+      "turns": 33,
+      "timestamp": "2025-03-24 10:10:27"
+    },
+    {
+      "player1": "AI_5",
+      "player2": "AI_8",
+      "winner": 0,
+      "turns": 24,
+      "timestamp": "2025-03-24 10:10:29"
+    },
+    {
+      "player1": "AI_8",
+      "player2": "AI_5",
+      "winner": 1,
+      "turns": 33,
+      "timestamp": "2025-03-24 10:10:30"
+    },
+    {
+      "player1": "AI_5",
+      "player2": "AI_8",
+      "winner": 0,
+      "turns": 24,
+      "timestamp": "2025-03-24 10:10:31"
+    },
+    {
+      "player1": "AI_9",
+      "player2": "Baseline AI",
+      "winner": 1,
+      "turns": 33,
+      "timestamp": "2025-03-24 10:10:31"
+    },
+    {
+      "player1": "Baseline AI",
+      "player2": "AI_9",
+      "winner": 0,
+      "turns": 46,
+      "timestamp": "2025-03-24 10:10:31"
+    },
+    {
+      "player1": "AI_9",
+      "player2": "Baseline AI",
+      "winner": 1,
+      "turns": 33,
+      "timestamp": "2025-03-24 10:10:31"
+    },
+    {
+      "player1": "AI_8",
+      "player2": "AI_8",
+      "winner": 0,
+      "turns": 28,
+      "timestamp": "2025-03-24 11:27:32"
+    },
+    {
+      "player1": "AI_3",
+      "player2": "AI_8",
+      "winner": -1,
+      "turns": 1,
+      "timestamp": "2025-03-24 11:29:57"
+    },
+    {
+      "player1": "AI_3",
+      "player2": "AI_8",
+      "winner": -1,
+      "turns": 1,
+      "timestamp": "2025-03-24 11:29:57"
+    },
+    {
+      "player1": "AI_3",
+      "player2": "AI_8",
+      "winner": -1,
+      "turns": 1,
+      "timestamp": "2025-03-24 11:29:57"
+    },
+    {
+      "player1": "AI_1",
+      "player2": "AI_7",
+      "winner": -1,
+      "turns": 0,
+      "timestamp": "2025-03-24 11:30:14"
+    },
+    {
+      "player1": "AI_7",
+      "player2": "AI_1",
+      "winner": 1,
+      "turns": 1,
+      "timestamp": "2025-03-24 11:30:16"
+    },
+    {
+      "player1": "AI_1",
+      "player2": "AI_7",
+      "winner": -1,
+      "turns": 0,
+      "timestamp": "2025-03-24 11:30:18"
+    },
+    {
+      "player1": "AI_4",
+      "player2": "AI_5",
+      "winner": -1,
+      "turns": 1,
+      "timestamp": "2025-03-24 11:30:19"
+    },
+    {
+      "player1": "AI_5",
+      "player2": "AI_4",
+      "winner": 1,
+      "turns": 1,
+      "timestamp": "2025-03-24 11:30:21"
+    },
+    {
+      "player1": "AI_4",
+      "player2": "AI_5",
+      "winner": -1,
+      "turns": 1,
+      "timestamp": "2025-03-24 11:30:22"
     }
   ]
 }
