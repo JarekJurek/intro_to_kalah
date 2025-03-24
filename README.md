@@ -10,46 +10,87 @@ Mancala is one of the oldest known board games, dating back to ancient times. Th
 
 ## Installation
 
-### Using pip
+This project requires Python 3.8+ and can be installed using either UV (recommended) or pip.
+
+### Option 1: Using UV (Recommended)
+
+[UV](https://github.com/astral-sh/uv) is a fast, reliable Python package installer and resolver.
+
+1. **Install UV** (if not already installed):
+   ```bash
+   curl -LsSf https://astral.sh/uv/install.sh | sh
+   ```
+
+2. **Clone the repository**:
+   ```bash
+   git clone https://github.com/JarekJurek/intro_to_kalah.git
+   cd intro_to_kalah
+   ```
+
+3. **Create and activate a virtual environment**:
+   ```bash
+   uv venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   ```
+
+4. **Install dependencies Using requirements.txt:**
+
+   ```bash
+   uv pip install -r requirements.txt
+   ```
+
+   **Or using the lock file:**
+   ```bash
+   uv pip sync
+   ```
+
+### Option 2: Using pip
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/yourusername/intro_to_kalah.git
+   cd intro_to_kalah
+   ```
+
+2. **Create and activate a virtual environment**:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   ```
+
+3. **Install dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Running the Game
+
+After installation, you can run the Mancala game with:
 
 ```bash
-# Clone the repository
-git clone https://github.com/JarekJurek/intro_to_kalah.git
-cd intro_to_kalah
-
-# Install required packages
-pip install -r requirements.txt
+python main.py
 ```
 
-### Using UV Package Manager
+For visualization of game statistics:
 
 ```bash
-# Install UV if you don't have it
-curl -fsSL https://raw.githubusercontent.com/astral-sh/uv/main/install.sh | bash
-
-# Install dependencies with UV
-uv pip install -r requirements.txt
+python stats_reader.py
 ```
 
 ## Requirements
 
-- Python 3.6+
-- pandas (data manipulation)
-- plotly (visualization)
-- Additional standard libraries: json, os, random, time, collections
+The project requires the following Python packages:
+- numpy
+- pandas
+- plotly
+- plotly-express
+- statsmodels
 
-You can install all dependencies using:
+All dependencies are listed in the 
 
-```bash
-pip install pandas plotly
-```
+requirements.txt
 
-Or with requirements.txt:
-
-```
-pandas>=1.3.0
-plotly>=5.3.0
-```
+ file and will be installed automatically with the above instructions.
 
 ## Game Modes
 
