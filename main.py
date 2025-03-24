@@ -1,3 +1,23 @@
+"""
+Mancala Game Implementation
+
+This module provides a complete implementation of the Mancala (Kalah) board game with:
+- Game logic and rules handling
+- AI opponents with configurable strategies
+- Multiple game modes (PvP, PvAI, AI vs AI)
+- Game statistics tracking and persistence
+
+Key components:
+1. Mancala class: Implements the game board and rules
+2. AI class: Implements minimax and BFS algorithms for computer players
+3. GameStatistics: Tracks and saves game outcomes
+4. Game mode functions: Manages different play scenarios
+5. Main menu interface: User interaction and game setup
+
+The implementation supports customizable AI configurations loaded from ai_configs.json,
+with statistics tracked and saved to game_stats.json.
+"""
+
 from collections import defaultdict
 import json
 import os
@@ -181,45 +201,55 @@ class AI:
 
     # def __init__(self, name, depth=5, weights_early=[1, 1, 1], weights_late=[1, 1, 1]):
     def __init__(self, config):
-
+        
+        self.algorithm = config.get('algorithm', 'minimax').lower()  # Default to Minimax
         self.depth = config['depth']
         self.weights_early = config['weights_early']
         self.weights_late = config['weights_late']
         self.name = config['name']
         self.config = config
+        
+        if self.algorithm not in ['minimax', 'bfs']:
+            raise ValueError(f"Invalid algorithm: {self.algorithm}.  Must be 'minimax' or 'bfs'.")
 
     def best_move(self, game):
-        """Returns the best move according to minimax."""
-        valid_moves = game.get_valid_moves()
-        if not valid_moves:
-            return None
-            
-        best_score = float('-inf')
-        best_move = valid_moves[0]
-        
-        alpha = float('-inf')
-        beta = float('inf')
-        
-        for move in valid_moves:
-            game_clone = game.clone()
-            extra_turn = game_clone.move(move)
-            
-            if extra_turn:
-                # If we get an extra turn, we're still the maximizing player
-                score = self.minimax(game_clone, self.depth - 1, alpha, beta, True)
+            """Returns the best move according to the AI's chosen strategy."""
+            if self.algorithm == 'minimax':
+                alpha = float('-inf')
+                beta = float('inf')
+                best_move = game.get_valid_moves()[0]
+                best_score = float('-inf')
+                for move in game.get_valid_moves():
+                    game_clone = game.clone()
+                    extra_turn = game_clone.move(move)
+                    if extra_turn:
+                        score = self.minimax(game_clone, self.depth - 1, alpha, beta, True)
+                    else:
+                        score = self.minimax(game_clone, self.depth - 1, alpha, beta, False)
+                    if score > best_score:
+                        best_score = score
+                        best_move = move
+                    alpha = max(alpha, best_score)
+                return best_move
+            elif self.algorithm == 'bfs':
+                return self.breadth_first_search(game)
             else:
-                score = self.minimax(game_clone, self.depth - 1, alpha, beta, False)
-            
-            if score > best_score:
-                best_score = score
-                best_move = move
-                
-            alpha = max(alpha, best_score)
-                
-        return best_move
+                raise ValueError(f"Invalid algorithm: {self.algorithm}. Must be 'minimax' or 'bfs'.")
 
     def minimax(self, game, depth, alpha, beta, maximizing):
-        """Minimax algorithm with alpha-beta pruning."""
+        """
+        Minimax algorithm with alpha-beta pruning.
+        
+        Args:
+            game: Current game state
+            depth: Remaining search depth
+            alpha: Best score for maximizing player
+            beta: Best score for minimizing player
+            maximizing: Boolean indicating if maximizing or minimizing
+            
+        Returns:
+            Best evaluation score for the current player
+        """
         if depth == 0 or game.is_game_over():
             return game.evaluate(self.config)
             
@@ -261,6 +291,57 @@ class AI:
                 if beta <= alpha:
                     break
             return min_eval
+    
+    def breadth_first_search(self, game):
+        """Returns the best move according to Breadth-First Search."""
+        original_game = game.clone()  # Store the original game state
+        valid_moves = original_game.get_valid_moves()  # Get valid moves from the original state
+        if not valid_moves:
+            return None
+
+        best_move = None
+        best_score = float('-inf')
+        queue = [(original_game.clone(), move, 0) for move in valid_moves]
+
+        while queue:
+            current_game, move, current_depth = queue.pop(0)
+            try:
+                current_game.move(move)
+            except ValueError:
+                continue
+
+            if current_depth == self.depth - 1 or current_game.is_game_over():
+                score = self.evaluate(current_game)
+                if score > best_score:
+                    best_score = score
+                    best_move = move
+            elif current_depth < self.depth - 1:
+                next_moves = original_game.get_valid_moves() #error
+                if next_moves:
+                    for next_move in next_moves:
+                        next_game = current_game.clone()
+                        try:
+                            next_game.move(next_move)
+                            queue.append((next_game, next_move, current_depth + 1))
+                        except ValueError:
+                            continue
+
+        if best_move is None:
+            if valid_moves:
+                best_move = valid_moves[0]
+            else:
+                return None
+        return best_move
+
+    def evaluate(self, game):
+        """
+        Evaluates the game state.  A simple heuristic for Mancala:
+        Difference in stones in the player's store.
+        """
+        if game.current_player == 0:
+            return game.pits[6] - game.pits[13]
+        else:
+            return game.pits[13] - game.pits[6]    
         
 class GameStatistics:
     """Tracks game statistics."""
@@ -339,7 +420,12 @@ class GameStatistics:
 
 
 def load_ai_configs():
-    """Load AI configurations from a file."""
+    """
+    Load AI configurations from ai_configs.json file.
+    
+    Returns:
+        list: A list of AI configuration dictionaries, or empty list if file not found
+    """
     filename = "ai_configs.json"
     if not os.path.exists(filename):
         return []
@@ -348,6 +434,15 @@ def load_ai_configs():
     
 
 def player_vs_player(stats):
+    """
+    Run a Player vs Player game mode.
+    
+    Args:
+        stats: GameStatistics object to record results
+        
+    Returns:
+        int: Winner of the game (0 for player 1, 1 for player 2, -1 for draw)
+    """
     game = Mancala()
     while not game.is_game_over():
         game.display()
@@ -369,7 +464,6 @@ def player_vs_player(stats):
 def player_vs_ai(stats, con):
     """Human vs AI game mode."""
     game = Mancala()
-    # ai = AI(depth=ai_depth, name=f"AI (depth {ai_depth})")
     ai_configs = load_ai_configs()
     ai = AI(ai_configs[con])
     
@@ -402,7 +496,19 @@ def player_vs_ai(stats, con):
     return winner
 
 def ai_vs_ai(stats, ai1_config, ai2_config, num_games=1, show_each_move=True):
-    """AI vs AI game mode with support for multiple games."""
+    """
+    AI vs AI game mode with support for multiple games.
+    
+    Args:
+        stats: GameStatistics object to record results
+        ai1_config: Configuration dictionary for first AI
+        ai2_config: Configuration dictionary for second AI
+        num_games: Number of games to play
+        show_each_move: Whether to display each move or just the final results
+        
+    Returns:
+        Dictionary with results of the matches
+    """
     results = {ai1_config['name']: 0, ai2_config['name']: 0, 'draws': 0}
     total_turns = 0
     
@@ -479,7 +585,15 @@ def ai_vs_ai(stats, ai1_config, ai2_config, num_games=1, show_each_move=True):
     return results
 
 def ais_vs_ais(stats, num_games_per_match=1, num_matches=10, show_each_move=False):
-    """Run multiple matches between randomly selected AI configurations."""
+    """
+    Run multiple matches between randomly selected AI configurations.
+    
+    Args:
+        stats: GameStatistics object to record results
+        num_games_per_match: Number of games to play per AI matchup
+        num_matches: Number of different AI matchups to run
+        show_each_move: Whether to display each move or just the final results
+    """
     ai_configs = load_ai_configs()
     
     if len(ai_configs) < 2:
@@ -507,7 +621,12 @@ def ais_vs_ais(stats, num_games_per_match=1, num_matches=10, show_each_move=Fals
     stats.display_stats()
         
 def main():
-
+    """
+    Main function that runs the Mancala game interface.
+    
+    Presents a menu of game options and handles user interaction with the game.
+    Initializes the statistics tracking and ensures stats are saved on exit.
+    """
     stats = GameStatistics()
 
     while True:
