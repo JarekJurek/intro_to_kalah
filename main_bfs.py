@@ -261,37 +261,52 @@ class AI:
             return min_eval
     
     def breadth_first_search(self, game):
-            """Returns the best move according to Breadth-First Search."""
-            valid_moves = game.get_valid_moves()
-            if not valid_moves:
+        """Returns the best move according to Breadth-First Search."""
+        original_game = game.clone()  # Store the original game state
+        valid_moves = original_game.get_valid_moves()  # Get valid moves from the original state
+        #print(f"BFS: Valid moves: {valid_moves}")
+        if not valid_moves:
+            #print("BFS: No valid moves")
+            return None
+
+        best_move = None
+        best_score = float('-inf')
+        queue = [(original_game.clone(), move, 0) for move in valid_moves]
+        #print(f"BFS: Initial queue: {[(move, 0) for move in valid_moves]}")
+
+        while queue:
+            current_game, move, current_depth = queue.pop(0)
+            try:
+                current_game.move(move)
+            except ValueError:
+                continue
+
+            if current_depth == self.depth - 1 or current_game.is_game_over():
+                score = self.evaluate(current_game)
+                if score > best_score:
+                    best_score = score
+                    best_move = move
+                    #print(f"BFS: New best move {best_move} with score {best_score}")
+            elif current_depth < self.depth - 1:
+                next_moves = original_game.get_valid_moves() #error
+                if next_moves:
+                    for next_move in next_moves:
+                        next_game = current_game.clone()
+                        try:
+                            next_game.move(next_move)
+                            queue.append((next_game, next_move, current_depth + 1))
+                        except ValueError:
+                            continue
+
+        if best_move is None:
+            if valid_moves:
+                best_move = valid_moves[0]
+                #print(f"BFS: No best move found, returning the first valid move: {best_move}")
+            else:
+                #print("BFS: No valid moves available.")
                 return None
-
-            best_move = None  # Initialize best_move to None
-            best_score = float('-inf')
-            queue = [(game.clone(), move, 0) for move in valid_moves]  # (game_state, move, depth)
-
-            while queue:
-                current_game, move, current_depth = queue.pop(0)
-                try:
-                    current_game.move(move)
-                except ValueError:
-                    continue
-
-                if current_depth == self.depth - 1 or current_game.is_game_over():
-                    # Evaluate the game state.  For BFS, a simple heuristic is sufficient.
-                    score = self.evaluate(current_game)
-                    if score > best_score:
-                        best_score = score
-                        best_move = move
-                elif current_depth < self.depth - 1:
-                    next_moves = current_game.get_valid_moves()
-                    if next_moves:
-                        for next_move in next_moves:
-                            queue.append((current_game.clone(), next_move, current_depth + 1))
-            if best_move is None:
-                print ("No valid moves")
-                return valid_moves[0]
-            return best_move
+        #print(f"BFS: Best move: {best_move}")
+        return best_move
 
     def evaluate(self, game):
         """
