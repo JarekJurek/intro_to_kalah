@@ -78,5 +78,14 @@
         "weights_early": [2.5, 1.8, 2.2],
         "weights_late": [3.2, 1.4, 1.8],
         "capture_weight": 2.4
+    },
+    {
+        "name": "AI_10",
+        "type": "AlphaBeta",
+        "algorithm": "bfs",
+        "depth": 7,
+        "weights_early": [2.5, 1.8, 2.2],
+        "weights_late": [3.2, 1.4, 1.8],
+        "capture_weight": 2.4
     }
 ]

@@ -505,9 +505,6 @@ def ais_vs_ais(stats, num_games_per_match=1, num_matches=10, show_each_move=Fals
     
     print("\nAll matches completed!")
     stats.display_stats()
-
-
-
         
 def main():
 
