@@ -48,7 +48,7 @@ This project requires Python 3.8+ and can be installed using either UV (recommen
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/intro_to_kalah.git
+   git clone https://github.com/JarekJurek/intro_to_kalah.git
    cd intro_to_kalah
    ```
 
